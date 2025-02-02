@@ -1,18 +1,16 @@
+# Use official Golang image as builder
 FROM golang:1.23.5-alpine AS builder
 
 WORKDIR /app
 
-# Copy go.mod and go.sum files
+# Copy files and install dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the entire project
 COPY . .
-
-# Build the application
 RUN go build -o pdf-splitter
 
-# Create a smaller final image
+# Use lightweight Alpine image
 FROM alpine:latest
 
 WORKDIR /root/
@@ -20,11 +18,12 @@ WORKDIR /root/
 # Install required dependencies
 RUN apk --no-cache add ca-certificates
 
-# Copy the binary from the builder stage
+# Copy built binary and templates
 COPY --from=builder /app/pdf-splitter .
-
-# Copy the templates directory
 COPY --from=builder /app/templates ./templates
+
+# Set environment variable for production
+ENV GIN_MODE=release
 
 # Expose the application port
 EXPOSE 8080

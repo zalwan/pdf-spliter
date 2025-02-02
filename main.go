@@ -23,7 +23,12 @@ const (
 )
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
+
 	r := gin.Default()
+
+	r.SetTrustedProxies(nil)
+
 	r.LoadHTMLGlob("templates/*")
 
 	os.MkdirAll(uploadDir, os.ModePerm)
