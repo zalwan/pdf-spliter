@@ -39,7 +39,7 @@ func main() {
 
 	r.POST("/split", handleSplitPDF)
 
-	r.Run(":8080")
+	r.Run(":8000")
 }
 
 func handleSplitPDF(c *gin.Context) {
