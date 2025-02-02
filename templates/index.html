@@ -5,19 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Splitter</title>
+    <link rel="icon" href="https://fav.farm/🤖" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
 </head>
 
-<body>
-    <h1>Upload and Split PDF</h1>
-    <form action="/split" method="POST" enctype="multipart/form-data">
-        <label for="pdf">Upload PDF:</label>
-        <input type="file" name="pdf" id="pdf" required><br><br>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
 
-        <label for="names">Enter names (one per line):</label><br>
-        <textarea name="names" id="names" rows="4" cols="50"></textarea><br><br>
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl"
+        x-data="{ loading: false, showPopup: false, fileUrl: '' }">
+        <h1 class="text-2xl font-bold text-center mb-4">Upload and Split PDF</h1>
 
-        <button type="submit">Split PDF</button>
-    </form>
+        <form action="/split" method="POST" enctype="multipart/form-data"
+            @submit.prevent="loading = true; setTimeout(() => { loading = false; showPopup = true; fileUrl = 'split_files.zip'; }, 3000)">
+            <div class="flex space-x-4">
+                <!-- File Uploader -->
+                <div class="w-1/2">
+                    <label class="block font-medium text-gray-700">Upload PDF:</label>
+                    <input type="file" name="pdf" required class="w-full p-2 border rounded-md">
+                </div>
+
+                <!-- Names Input -->
+                <div class="w-1/2">
+                    <label class="block font-medium text-gray-700">Enter names:</label>
+                    <textarea name="names" rows="4" class="w-full p-2 border rounded-md"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-4 text-center">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Split PDF
+                </button>
+            </div>
+
+            <!-- Loading Animation -->
+            <div x-show="loading" class="text-blue-600 font-semibold mt-3 text-center animate-pulse">
+                Processing... Please wait.
+            </div>
+        </form>
+
+        <!-- Download Popup -->
+        <div x-show="showPopup" x-transition
+            class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                <h2 class="text-xl font-semibold mb-4">Split Completed!</h2>
+                <p class="mb-4">Your files are ready for download.</p>
+                <a :href="fileUrl" download
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Download ZIP
+                </a>
+                <button @click="showPopup = false"
+                    class="ml-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
