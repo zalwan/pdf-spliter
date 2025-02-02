@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Splitter</title>
+</head>
+
+<body>
+    <h1>Upload and Split PDF</h1>
+    <form action="/split" method="POST" enctype="multipart/form-data">
+        <label for="pdf">Upload PDF:</label>
+        <input type="file" name="pdf" id="pdf" required><br><br>
+
+        <label for="names">Enter names (one per line):</label><br>
+        <textarea name="names" id="names" rows="4" cols="50"></textarea><br><br>
+
+        <button type="submit">Split PDF</button>
+    </form>
+</body>
+
+</html>
