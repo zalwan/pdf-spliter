@@ -6,6 +6,7 @@
     <title>PDF Splitter</title>
     <link rel="icon" href="https://fav.farm/📑" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js "></script>
   </head>
   <body>
     <section class="flex min-h-screen flex-col items-center justify-center bg-gray-800 py-4">
@@ -24,13 +25,14 @@
           </label>
         </div>
 
-        <div class="">
+        <div x-data="{ count: 0 }">
           <div class="flex flex-col rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-600 dark:bg-gray-700">
-            <div class="border-b border-gray-200 px-3 py-2 dark:border-gray-600">
+            <div class="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-600">
               <p class="text-center font-mono text-white">Enter names (one per line)</p>
+              <span x-text="count" class="rounded-md bg-gray-800 px-3 py-1 text-center text-white">0</span>
             </div>
-            <div class="bg-white px-4 py-2 dark:bg-gray-800">
-              <textarea name="names" id="names" rows="4" cols="50" class="h-full min-h-[200px] w-full border-0 bg-white text-sm text-gray-900 focus:ring-0 lg:min-h-[350px] dark:bg-gray-800 dark:text-white dark:placeholder-gray-400" placeholder="Enter name page..."></textarea>
+            <div class="bg-white p-2 dark:bg-gray-800">
+              <textarea name="names" id="names" rows="4" cols="50" x-on:input="count = $event.target.value.split('\n').filter(line => line.trim() !== '').length" class="h-full min-h-[200px] w-full border-0 bg-white text-sm text-gray-900 focus:ring-0 lg:min-h-[350px] dark:bg-gray-800 dark:text-white dark:placeholder-gray-400" placeholder="Enter name page..."></textarea>
             </div>
             <div class="border-t border-gray-200 px-3 py-2 dark:border-gray-600">
               <button type="submit" id="generateBtn" class="w-full rounded-lg bg-blue-700 px-4 py-2.5 text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900" onclick="showLoading(event)">Generate PDF</button>
